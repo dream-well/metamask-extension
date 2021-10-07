@@ -26,6 +26,7 @@ import InfoTab from './info-tab';
 import SecurityTab from './security-tab';
 import ContactListTab from './contact-list-tab';
 import ExperimentalTab from './experimental-tab';
+import AddNetworkForm from './networks-tab/add-network-form';
 
 class SettingsPage extends PureComponent {
   static propTypes = {
@@ -225,6 +226,7 @@ class SettingsPage extends PureComponent {
   }
 
   renderContent() {
+    const { history } = this.props;
     return (
       <Switch>
         <Route exact path={GENERAL_ROUTE} component={SettingsTab} />

@@ -2453,6 +2453,13 @@ export function setNewNetworkAdded(newNetworkAdded) {
   };
 }
 
+export function setNewNetworkAdded(newNetworkAdded) {
+  return {
+    type: actionConstants.SET_NEW_NETWORK_ADDED,
+    value: newNetworkAdded,
+  };
+}
+
 export function setLastActiveTime() {
   return (dispatch) => {
     background.setLastActiveTime((err) => {

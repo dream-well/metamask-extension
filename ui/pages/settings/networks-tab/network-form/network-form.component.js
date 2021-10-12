@@ -279,7 +279,6 @@ export default class NetworkForm extends PureComponent {
     value,
     optionalTextFieldKey,
     tooltipText,
-    autoFocus = false,
   }) {
     const { errors } = this.state;
     const { viewOnly } = this.props;
@@ -310,7 +309,6 @@ export default class NetworkForm extends PureComponent {
           value={value}
           disabled={viewOnly}
           error={errorMessage}
-          autoFocus={autoFocus}
         />
       </div>
     );
@@ -669,7 +667,6 @@ export default class NetworkForm extends PureComponent {
     } = this.state;
 
     const deletable = !isCurrentRpcTarget && !viewOnly;
-
     const isSubmitDisabled =
       this.hasErrors() ||
       this.isSubmitting() ||

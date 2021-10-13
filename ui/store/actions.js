@@ -2446,6 +2446,7 @@ export function setSelectedSettingsRpcUrl(newRpcUrl) {
   };
 }
 
+<<<<<<< HEAD
 export function setNewNetworkAdded(newNetworkAdded) {
   return {
     type: actionConstants.SET_NEW_NETWORK_ADDED,
@@ -2453,6 +2454,8 @@ export function setNewNetworkAdded(newNetworkAdded) {
   };
 }
 
+=======
+>>>>>>> 0f8152fbe (refactoring the network form changes)
 export function setNewNetworkAdded(newNetworkAdded) {
   return {
     type: actionConstants.SET_NEW_NETWORK_ADDED,

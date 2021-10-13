@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import validUrl from 'valid-url';
 import log from 'loglevel';
+import classnames from 'classnames';
 import TextField from '../../../../components/ui/text-field';
 import Button from '../../../../components/ui/button';
 import Tooltip from '../../../../components/ui/tooltip';
@@ -34,7 +35,7 @@ export default class NetworkForm extends PureComponent {
     ticker: PropTypes.string,
     viewOnly: PropTypes.bool,
     networkName: PropTypes.string,
-    onClear: PropTypes.func.isRequired,
+    onClear: PropTypes.func,
     setRpcTarget: PropTypes.func.isRequired,
     isCurrentRpcTarget: PropTypes.bool,
     blockExplorerUrl: PropTypes.string,
@@ -279,9 +280,10 @@ export default class NetworkForm extends PureComponent {
     value,
     optionalTextFieldKey,
     tooltipText,
+    autoFocus = false,
   }) {
     const { errors } = this.state;
-    const { viewOnly } = this.props;
+    const { viewOnly, addNewNetwork } = this.props;
     const errorMessage = errors[fieldKey]?.msg || '';
 
     return (
@@ -294,7 +296,10 @@ export default class NetworkForm extends PureComponent {
             <Tooltip
               position="top"
               title={tooltipText}
-              wrapperClassName="networks-tab__network-form-label-tooltip"
+              wrapperClassName={classnames({
+                'networks-tab__network-form-label-tooltip': !addNewNetwork,
+                'add-network-form__network-form-label-tooltip': addNewNetwork,
+              })}
             >
               <i className="fa fa-info-circle" />
             </Tooltip>
@@ -309,6 +314,7 @@ export default class NetworkForm extends PureComponent {
           value={value}
           disabled={viewOnly}
           error={errorMessage}
+          autoFocus={autoFocus}
         />
       </div>
     );
@@ -667,6 +673,7 @@ export default class NetworkForm extends PureComponent {
     } = this.state;
 
     const deletable = !isCurrentRpcTarget && !viewOnly;
+
     const isSubmitDisabled =
       this.hasErrors() ||
       this.isSubmitting() ||

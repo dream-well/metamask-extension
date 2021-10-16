@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import validUrl from 'valid-url';
 import log from 'loglevel';
-import classnames from 'classnames';
 import TextField from '../../../../components/ui/text-field';
 import Button from '../../../../components/ui/button';
 import Tooltip from '../../../../components/ui/tooltip';
@@ -283,7 +282,7 @@ export default class NetworkForm extends PureComponent {
     autoFocus = false,
   }) {
     const { errors } = this.state;
-    const { viewOnly, addNewNetwork } = this.props;
+    const { viewOnly } = this.props;
     const errorMessage = errors[fieldKey]?.msg || '';
 
     return (
@@ -296,10 +295,7 @@ export default class NetworkForm extends PureComponent {
             <Tooltip
               position="top"
               title={tooltipText}
-              wrapperClassName={classnames({
-                'networks-tab__network-form-label-tooltip': !addNewNetwork,
-                'add-network-form__network-form-label-tooltip': addNewNetwork,
-              })}
+              wrapperClassName="networks-tab__network-form-label-tooltip"
             >
               <i className="fa fa-info-circle" />
             </Tooltip>

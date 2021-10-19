@@ -11,6 +11,7 @@ import {
 } from '../../../../../shared/modules/network.utils';
 import { jsonRpcRequest } from '../../../../../shared/modules/rpc.utils';
 import { decimalToHex } from '../../../../helpers/utils/conversions.util';
+import { hasError, hasErrors, isSubmitting, isValidWhenAppended, prefixChainId,   } from '../new-network.util';
 
 const FORM_STATE_KEYS = [
   'rpcUrl',
@@ -146,13 +147,13 @@ export default class NetworkForm extends PureComponent {
    * @param {string} chainId - The chainId to prefix
    * @returns {string} The chainId, prefixed with '0x'
    */
-  prefixChainId(chainId) {
-    let prefixedChainId = chainId;
-    if (!chainId.startsWith('0x')) {
-      prefixedChainId = `0x${parseInt(chainId, 10).toString(16)}`;
-    }
-    return prefixedChainId;
-  }
+  // prefixChainId(chainId) {
+  //   let prefixedChainId = chainId;
+  //   if (!chainId.startsWith('0x')) {
+  //     prefixedChainId = `0x${parseInt(chainId, 10).toString(16)}`;
+  //   }
+  //   return prefixedChainId;
+  // }
 
   onSubmit = async () => {
     this.setState({
@@ -233,9 +234,9 @@ export default class NetworkForm extends PureComponent {
     });
   };
 
-  isSubmitting() {
-    return this.state.isSubmitting;
-  }
+  // isSubmitting() {
+  //   return this.state.isSubmitting;
+  // }
 
   stateIsUnchanged() {
     const {
@@ -344,21 +345,21 @@ export default class NetworkForm extends PureComponent {
     });
   };
 
-  hasError = (errorKey, errorKeyVal) => {
-    return this.state.errors[errorKey]?.key === errorKeyVal;
-  };
+  // hasError = (errorKey, errorKeyVal) => {
+  //   return this.state.errors[errorKey]?.key === errorKeyVal;
+  // };
 
-  hasErrors = () => {
-    const { errors } = this.state;
-    return Object.keys(errors).some((key) => {
-      const error = errors[key];
-      // Do not factor in duplicate chain id error for submission disabling
-      if (key === 'chainId' && error.key === 'chainIdExistsErrorMsg') {
-        return false;
-      }
-      return error.key && error.msg;
-    });
-  };
+  // hasErrors = () => {
+  //   const { errors } = this.state;
+  //   return Object.keys(errors).some((key) => {
+  //     const error = errors[key];
+  //     // Do not factor in duplicate chain id error for submission disabling
+  //     if (key === 'chainId' && error.key === 'chainIdExistsErrorMsg') {
+  //       return false;
+  //     }
+  //     return error.key && error.msg;
+  //   });
+  // };
 
   validateChainIdOnChange = (selfRpcUrl, chainIdArg = '') => {
     const { t } = this.context;
@@ -482,10 +483,10 @@ export default class NetworkForm extends PureComponent {
     return true;
   };
 
-  isValidWhenAppended = (url) => {
-    const appendedRpc = `http://${url}`;
-    return validUrl.isWebUri(appendedRpc) && !url.match(/^https?:\/\/$/u);
-  };
+  // isValidWhenAppended = (url) => {
+  //   const appendedRpc = `http://${url}`;
+  //   return validUrl.isWebUri(appendedRpc) && !url.match(/^https?:\/\/$/u);
+  // };
 
   validateBlockExplorerURL = (url, stateKey) => {
     const { t } = this.context;
@@ -493,7 +494,7 @@ export default class NetworkForm extends PureComponent {
       let errorKey;
       let errorMessage;
 
-      if (this.isValidWhenAppended(url)) {
+      if (isValidWhenAppended(url)) {
         errorKey = 'urlErrorMsg';
         errorMessage = t('urlErrorMsg');
       } else {
@@ -515,13 +516,13 @@ export default class NetworkForm extends PureComponent {
     const { networksToRender } = this.props;
     const { chainId: stateChainId } = this.state;
     const isValidUrl = validUrl.isWebUri(url);
-    const chainIdFetchFailed = this.hasError('chainId', 'failedToFetchChainId');
+    const chainIdFetchFailed = hasError('chainId', 'failedToFetchChainId');
     const [matchingRPCUrl] = networksToRender.filter((e) => e.rpcUrl === url);
 
     if (!isValidUrl && url !== '') {
       let errorKey;
       let errorMessage;
-      if (this.isValidWhenAppended(url)) {
+      if (isValidWhenAppended(url)) {
         errorKey = 'urlErrorMsg';
         errorMessage = t('urlErrorMsg');
       } else {
@@ -562,7 +563,7 @@ export default class NetworkForm extends PureComponent {
     } = this.state;
 
     const isSubmitDisabled =
-      this.hasErrors() || this.isSubmitting() || !rpcUrl || !chainId;
+      hasErrors(this.state.errors) || isSubmitting(this.state) || !rpcUrl || !chainId;
 
     return (
       <div className="add-network-form__body">
@@ -671,8 +672,8 @@ export default class NetworkForm extends PureComponent {
     const deletable = !isCurrentRpcTarget && !viewOnly;
 
     const isSubmitDisabled =
-      this.hasErrors() ||
-      this.isSubmitting() ||
+      this.hasErrors(this.state.errors) ||
+      this.isSubmitting(this.state) ||
       this.stateIsUnchanged() ||
       !rpcUrl ||
       !chainId;
@@ -754,8 +755,31 @@ export default class NetworkForm extends PureComponent {
 
   render() {
     const { addNewNetwork } = this.props;
+    // return addNewNetwork
+    //   ? this.renderAddNetworkForm()
+    //   : this.renderNetworkForm();
+
     return addNewNetwork
-      ? this.renderAddNetworkForm()
-      : this.renderNetworkForm();
+     ? <AddNetworkForm
+          rpcUrl= {this.state.rpcUrl}
+          chainId={this.state.chainId}
+          ticker={this.state.ticker}
+          networkName={this.state.networkName}
+          blockExplorerUrl={this.state.blockExplorerUrl}
+          setStateWithValue={this.setStateWithValue}
+          validateUrlRpcUrl={this.validateUrlRpcUrl}
+          validateChainIdOnChange={this.validateChainIdOnChange}
+          validateBlockExplorerURL={this.validateBlockExplorerURL}
+          onCancel={() => this.onCancel()}
+          onSubmit= {() => this.onSubmit()}
+        />
+      : <NetworkDetailsDisplay
+          setStateWithValue={this.setStateWithValue}
+          validateUrlRpcUrl={this.validateUrlRpcUrl}
+          validateChainIdOnChange={this.validateChainIdOnChange}
+          validateBlockExplorerURL={this.validateBlockExplorerURL}
+          onCancel={() => this.onCancel()}
+          onSubmit= {() => this.onSubmit()}
+        />
   }
 }

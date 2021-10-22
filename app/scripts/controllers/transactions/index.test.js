@@ -13,6 +13,7 @@ import {
   TRANSACTION_STATUSES,
   TRANSACTION_TYPES,
 } from '../../../../shared/constants/transaction';
+import { ZERO_VALUE } from '../../../../shared/constants/hex-values';
 import { SECOND } from '../../../../shared/constants/time';
 import { GAS_ESTIMATE_TYPES } from '../../../../shared/constants/gas';
 import { METAMASK_CONTROLLER_EVENTS } from '../../metamask-controller';
@@ -341,7 +342,7 @@ describe('Transaction Controller', function () {
       assert.ok('history' in txMeta, 'should have a history');
       assert.equal(
         txMeta.txParams.value,
-        '0x0',
+        ZERO_VALUE,
         'should have added 0x0 as the value',
       );
 

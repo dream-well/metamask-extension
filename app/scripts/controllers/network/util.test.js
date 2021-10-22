@@ -3,6 +3,7 @@ import {
   TRANSACTION_STATUSES,
   TRANSACTION_TYPES,
 } from '../../../../shared/constants/transaction';
+import { ZERO_VALUE } from '../../../../shared/constants/hex-values';
 import { formatTxMetaForRpcResult } from './util';
 
 describe('network utils', function () {
@@ -49,7 +50,7 @@ describe('network utils', function () {
         transactionIndex: null,
         type: '0x2',
         v: '0x29',
-        value: '0x0',
+        value: ZERO_VALUE,
       };
       const result = formatTxMetaForRpcResult(txMeta);
       assert.deepEqual(result, expectedResult);
@@ -94,7 +95,7 @@ describe('network utils', function () {
         transactionIndex: null,
         type: '0x0',
         v: '0x29',
-        value: '0x0',
+        value: ZERO_VALUE,
       };
       const result = formatTxMetaForRpcResult(txMeta);
       assert.deepEqual(result, expectedResult);

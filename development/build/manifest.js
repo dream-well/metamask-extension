@@ -4,6 +4,7 @@ const { merge, cloneDeep } = require('lodash');
 
 const baseManifest = require('../../app/manifest/_base.json');
 const betaManifestModifications = require('../../app/manifest/_beta_modifications.json');
+const flaskManifestModifications = require('../../app/manifest/_flask_modifications.json');
 
 const { createTask, composeSeries } = require('./task');
 const { BuildTypes } = require('./utils');
@@ -116,6 +117,8 @@ function getBuildModifications(buildType) {
   const buildModifications = {};
   if (buildType === BuildTypes.beta) {
     Object.assign(buildModifications, betaManifestModifications);
+  } else if (buildType === BuildTypes.flask) {
+    Object.assign(buildModifications, flaskManifestModifications);
   }
   return buildModifications;
 }

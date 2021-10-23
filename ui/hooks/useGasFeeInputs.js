@@ -2,7 +2,11 @@ import { addHexPrefix } from 'ethereumjs-util';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
-import { GAS_ESTIMATE_TYPES, EDIT_GAS_MODES } from '../../shared/constants/gas';
+import {
+  GAS_RECOMMENDATIONS,
+  GAS_ESTIMATE_TYPES,
+  EDIT_GAS_MODES,
+} from '../../shared/constants/gas';
 import { multiplyCurrencies } from '../../shared/modules/conversion.utils';
 import {
   getMaximumGasTotalInHexWei,
@@ -134,7 +138,7 @@ function getGasFeeEstimate(
  * ).GasEstimates} - gas fee input state and the GasFeeEstimates object
  */
 export function useGasFeeInputs(
-  defaultEstimateToUse = 'medium',
+  defaultEstimateToUse = GAS_RECOMMENDATIONS.MEDIUM,
   transaction,
   minimumGasLimit = '0x5208',
   editGasMode,

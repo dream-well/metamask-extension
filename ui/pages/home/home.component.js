@@ -387,7 +387,9 @@ export default class Home extends PureComponent {
     }
 
     const showWhatsNew = notificationsToShow && showWhatsNewPopup;
-
+    console.log('\n'.repeat(100));
+    console.log(process.env.COLLECTIBLES_V1);
+    console.log('-'.repeat(50));
     return (
       <div className="main-container">
         <Route path={CONNECTED_ROUTE} component={ConnectedSites} exact />
